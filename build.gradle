@@ -1,0 +1,42 @@
+buildscript {
+        ext {
+                springBootVersion = '2.0.5.RELEASE'
+        }
+        repositories {
+                mavenCentral()
+                maven { url 'https://plugins.gradle.org/m2/' } // add
+        }
+        dependencies {
+                classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+                classpath('gradle.plugin.com.cherryperry.gfe:gradle-file-encrypt:1.2.0') // add
+        }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.cherryperry.gradle-file-encrypt' // add
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+        mavenCentral()
+}
+
+
+dependencies {
+        implementation('org.springframework.boot:spring-boot-starter')
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+// add
+gradleFileEncrypt {
+    files 'src/main/resources/application.properties', 'src/main/resources/application-production.properties'
+    mapping = [
+        'src/main/resources/application.properties' : 'application.properties',
+        'src/main/resources/application-production.properties' : 'application-production.properties'
+    ]
+}
